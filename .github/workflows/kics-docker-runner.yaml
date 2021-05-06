@@ -25,7 +25,3 @@ jobs:
       - name: Show results
         run: |
           cat results-dir/results.json
-      - name: Upload Json file
-        uses: github/codeql-action/upload-json@v1
-        with:
-          json_file: results-dir/results.json
