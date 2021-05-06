@@ -1,0 +1,31 @@
+name: Scan with KICS docker-runner
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  kics-job:
+    runs-on: ubuntu-latest
+    name: kics-action
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Mkdir results-dir
+        run: mkdir -p results-dir
+      - name: Run KICS Scan with result
+        uses: checkmarx/kics-action@docker-runner
+        with:
+          path: 'Dockerfile'
+          output_path: results-dir
+          platform_type: Dockerfile
+          output_formats: 'json'
+      - name: Show results
+        run: |
+          cat results-dir/results.json
+      - name: Upload Json file
+        uses: github/codeql-action/upload-json@v1
+        with:
+          json_file: results-dir/results.json
