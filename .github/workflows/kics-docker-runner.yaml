@@ -21,7 +21,12 @@ jobs:
           path: '.'
           output_path: results-dir
           platform_type: Dockerfile
-          output_formats: 'json'
+          #output_formats: 'json,sarif'
+          output_formats: 'sarif'
       - name: Show results
         run: |
-          cat results-dir/results.json
+          cat results-dir/results.sarif
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: results-dir/results.sarif
